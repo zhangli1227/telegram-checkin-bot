@@ -1,0 +1,4 @@
+{
+    "TELEGRAM_BOT_TOKEN": "在此处放置您的Token(仅示例，不要放真实Token)"
+    "ADMIN_IDS": [123456789] #换为您的管理员ID
+}
