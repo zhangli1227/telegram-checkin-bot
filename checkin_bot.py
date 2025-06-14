@@ -10,30 +10,48 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandle
 # 配置部分
 # ==============================================
 
-def load_config():
-    """加载配置文件"""
-    config_path = 'config.json'
-    if not os.path.exists(config_path):
-        raise FileNotFoundError(f"配置文件 {config_path} 不存在")
+# def load_config():
+#     """加载配置文件"""
+#     config_path = 'config.json'
+#     if not os.path.exists(config_path):
+#         raise FileNotFoundError(f"配置文件 {config_path} 不存在")
     
-    with open(config_path, 'r', encoding='utf-8') as f:
-        config = json.load(f)
+#     with open(config_path, 'r', encoding='utf-8') as f:
+#         config = json.load(f)
     
-    return config
+#     return config
 
-# 加载配置
-try:
-    config = load_config()
-    TOKEN = config.get('TELEGRAM_BOT_TOKEN')
-    if not TOKEN:
-        raise ValueError("配置文件中缺少 TELEGRAM_BOT_TOKEN")
-except Exception as e:
-    print(f"加载配置文件失败: {e}")
-    # 如果配置文件加载失败，可以在这里设置一个默认值用于测试
-    # 但实际部署时不应该这样做
-    TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', None)
-    if not TOKEN:
-        raise ValueError("无法从配置文件或环境变量中获取TELEGRAM_BOT_TOKEN")
+
+# # 加载配置
+# try:
+#     config = load_config()
+#     TOKEN = config.get('TELEGRAM_BOT_TOKEN')
+#     if not TOKEN:
+#         raise ValueError("配置文件中缺少 TELEGRAM_BOT_TOKEN")
+# except Exception as e:
+#     print(f"加载配置文件失败: {e}")
+#     # 如果配置文件加载失败，可以在这里设置一个默认值用于测试
+#     # 但实际部署时不应该这样做
+#     TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', None)
+#     if not TOKEN:
+#         raise ValueError("无法从配置文件或环境变量中获取TELEGRAM_BOT_TOKEN")
+
+
+# ==============================================
+# 配置部分 - 从环境变量获取配置
+# ==============================================
+
+
+# 从环境变量加载Telegram Bot Token
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+if not TOKEN:
+    raise ValueError("请设置环境变量 TELEGRAM_BOT_TOKEN")
+
+# 从环境变量加载管理员ID列表(以逗号分隔的字符串)
+ADMIN_IDS_STR = os.getenv('ADMIN_IDS', '')
+# 将字符串转换为整数列表
+ADMIN_IDS = [int(id_str) for id_str in ADMIN_IDS_STR.split(',') if id_str.strip()]
+
 
 # ==============================================
 # 日志设置
